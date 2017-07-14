@@ -1,0 +1,97 @@
+<html>
+<head>
+  <script src='../javascripts/jquery.min.js'></script>
+  <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+  <script src='../javascripts/ang5.js'></script>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+  <link rel="stylesheet" href="../stylesheets/style.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+  <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+</head>
+<body>
+
+<div ng-app="myApp" ng-controller="myCtrl">
+
+<nav class="navbar navbar-inverse">
+  <div class="container-fluid">
+    <div class="navbar-header">
+   <a class="navbar-brand"><span style='color:lightblue'>Movie Manager</span></a>
+    </div>
+    <ul class="nav navbar-nav">
+      <li class="active"><a><span class="glyphicon glyphicon-user"></span> User</a></li>
+    </ul>
+	<ul class="nav navbar-nav navbar-right">
+	  <li class="dropdown">
+        <a class="dropdown-toggle" data-toggle="dropdown" href="#">{{username}}<span class="caret"></span></a>
+        <ul class="dropdown-menu">
+          <li><a href='http://localhost:3000/movieManager/logout'><span class='logout'><span class="glyphicon glyphicon-log-out"></span> Logout</span></a></li>
+        </ul>
+      </li>
+	</ul>
+  </div>
+</nav>
+
+<div class='container'>
+
+
+
+<div class='row'>
+
+<div class='col-sm-4'>
+
+    <form role='form' name="formReview" ng-submit="addReview(review)">
+    <div class="form-group">
+    <label for="review.movie_id">Select movie</label>
+	<select id='review.movie_id' name='movie_id' ng-options="x.name for x in movies track by x._id" ng-model="review.movie_id" required>
+	</select>
+	<span class="showError" ng-show="formReview.movie_id.$touched && formReview.movie_id.$invalid">
+	<span ng-show="formReview.movie_id.$error.required">Movie is required.</span>
+	</span>
+    </div>
+    <div class="form-group">
+    <label for="review.content">Review</label>
+        <input type='text' class='form-control' id='review.content' ng-model='review.content' name='content' required>
+			<span class="showError" ng-show="formReview.content.$touched && formReview.content.$invalid">
+	        <span ng-show="formReview.content.$error.required">Review is required.</span>
+	        </span>
+    </div>  
+    <div class="form-group">  
+    <input class='form-control invo' type="submit" value="Submit" ng-disabled="formReview.movie_id.$invalid || formReview.content.$invalid" />            
+    </div>
+   </form>
+
+</div>
+
+<div class='col-sm-8'>
+
+    <form role='form'>
+    <div class="form-group">
+    <label for="activeMovieShows">Select movie</label>
+	<select class='form-control' ng-change='fetchReviews(activeMovieReview)' id='activeMovieReview' name='activeMovieReview' ng-options="x.name for x in movies track by x._id" ng-model="activeMovieReview">
+	</select>
+    </div>
+    </form>
+	
+	<table class='table table-hover'>
+     <tr>
+      <th ng-click="orderReview('document')">Review</th>
+      <th ng-click="orderReview('sentiment')">Rating</th>
+     </tr>
+	 
+	 <tr ng-repeat="x in reviews | orderBy:reviewOrder" id='review{{x._id}}'>
+		  <td>{{x.document}}</td>
+		  <td>{{x.sentiment}}</td>	 
+     </tr>
+   
+   </table>
+
+</div>
+
+</div>
+
+</div>
+</div>
+</body>
+</html>

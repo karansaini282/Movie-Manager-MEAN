@@ -1,0 +1,68 @@
+<html>
+<head>
+  <script src='../javascripts/jquery.min.js'></script>
+  <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+  <script src='../javascripts/ang3.js'></script>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+  <link rel="stylesheet" href="../stylesheets/style.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+  <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+</head>
+<body>
+
+<nav class="navbar navbar-inverse">
+  <div class="container-fluid">
+    <div class="navbar-header">
+   <a class="navbar-brand"><span style='color:lightblue'>Movie Manager</span></a>
+    </div>
+    <ul class="nav navbar-nav">
+	  <li><a href='http://localhost:3000/movieManager/admin'>Admin</a></li>	
+      <li class="active"><a>Login</a></li>
+	  <li><a href='http://localhost:3000/movieManager/signup'>Signup</a></li>
+    </ul>
+  </div>
+</nav>
+
+<div class='container'>
+
+<div ng-app="myApp" ng-controller="myCtrl">
+
+<div class='row'>
+
+<div class='col-sm-4'>
+
+    <form role='form' name="formLogin" ng-submit="checkLogin(user)" novalidate>
+    <div class="form-group">
+    <label for="user.username">Username</label>
+    <input type='text' class='form-control' id='user.username' name='username' ng-model='user.username' required>
+	<span class="showError" ng-show="formLogin.username.$touched && formLogin.username.$invalid">
+	<span ng-show="formLogin.username.$error.required">Username is required.</span>
+	</span>
+    </div>
+    <div class="form-group">
+    <label for="user.password">Password</label>
+    <input type='password' class='form-control' id='user.password' ng-model='user.pass' name='password' required>
+	<span class="showError" ng-show="formLogin.password.$touched && formLogin.password.$invalid">
+	<span ng-show="formLogin.password.$error.required">Password is required.</span>
+	</span>	
+    </div>
+    <div class="form-group">
+    <input class='form-control invo' type="submit" value="Submit" ng-disabled="formLogin.username.$invalid || formLogin.password.$invalid" />            
+    </div>
+   </form>
+ 
+  </div>
+  
+<div class='col-sm-8'>
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</body>
+</html>

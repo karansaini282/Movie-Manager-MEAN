@@ -1,0 +1,10 @@
+<td><input type='text' ng-model='newmovie.name' value='<%= movie.name %>' id='movieName<%= movie._id %>'></input></td>
+<td><input type='text' ng-model='newmovie.genre' value='<%= movie.genre %>' id='movieGenre<%= movie._id %>'></input></td>
+<td><input type='text' ng-model='newmovie.language' value='<%= movie.language %>' id='movieLanguage<%= movie._id %>'></input></td>
+<td><input type='text' ng-model='newmovie.plot' value='<%= movie.plot %>' id='moviePlot<%= movie._id %>'></input></td>
+<td>  
+<div class="btn-group btn-group-xs">
+<button ng-click='saveMovie(newmovie)' type="button" class="btn btn-primary">Save</button>
+<button ng-click='cancelMovie(newmovie)' type="button" class="btn btn-danger">Cancel</button>
+</div>
+</td>

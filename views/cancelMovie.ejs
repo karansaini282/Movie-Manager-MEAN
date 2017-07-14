@@ -1,0 +1,10 @@
+<td><%= movie.name %></td>
+<td><%= movie.genre %></td>
+<td><%= movie.language %></td>
+<td><%= movie.plot %></td>
+<td>  
+<div class="btn-group btn-group-xs">
+<button ng-click='editMovie(<%= movie %>)' type="button" class="btn btn-primary">Edit</button>
+<button ng-click='removeMovie(<%= movie %>)' type="button" class="btn btn-danger">Remove</button>
+</div>
+</td>

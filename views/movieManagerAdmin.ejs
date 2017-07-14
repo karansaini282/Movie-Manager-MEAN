@@ -1,0 +1,433 @@
+<html>
+<head>
+  <script src='../javascripts/jquery.min.js'></script>
+  <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+  <script src='../javascripts/ang2.js'></script>
+  <script src='../javascripts/theatre.js'></script>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+  <link rel="stylesheet" href="../stylesheets/style.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+  <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+</head>
+<body>
+
+<nav class="navbar navbar-inverse">
+  <div class="container-fluid">
+    <div class="navbar-header">
+   <a class="navbar-brand"><span style='color:lightblue'>Movie Manager</span></a>
+    </div>
+    <ul class="nav navbar-nav">
+      <li class="active"><a>Admin</a></li>
+	  <li><a href='http://localhost:3000/movieManager/login'>User</a></li>
+    </ul>
+  </div>
+</nav>
+
+<div class='container'>
+
+<div ng-app="myApp" ng-controller="myCtrl">
+
+<div class='row'>
+
+<div class='col-sm-5'>
+<ul class="nav nav-pills nav-justified">
+  <li class="active"><a data-toggle="pill" href="#addTab">Add</a></li>
+  <li><a data-toggle="pill" href="#editTab">Edit</a></li>
+</ul>
+<div class="tab-content">
+
+<div class='tab-pane fade in active' id='addTab'>
+
+<form role='form'>
+    <div class="form-group">
+    <label for="adminOption">Add Entry</label>
+    <select class='form-control' id='adminOption' ng-model="adminOption">
+	  <option value="" disabled selected>Select your option</option>
+      <option value="Movies">Movies</option>
+      <option value="Actors">Actors</option>
+      <option value="Shows">Shows</option>
+      <option value="Theatres">Theatres</option>
+    </select>
+    </div>
+</form>
+
+<div ng-switch="adminOption">
+ 
+  <div ng-switch-when="Movies">
+    <form role='form' name="formMovies" ng-submit="addMovies(movie)" novalidate>
+    <div class="form-group">
+    <label for="movie.name">Name</label>
+    <input type='text' class='form-control' id='movie.name' name='name' ng-model='movie.name' required>
+	<span class="showError" ng-show="formMovies.name.$touched && formMovies.name.$invalid">
+	<span ng-show="formMovies.name.$error.required">Name is required.</span>
+	</span>
+    </div>
+    <div class="form-group">
+    <label for="movie.genre">Genre</label>
+    <input type='text' class='form-control' id='movie.genre' ng-model='movie.genre' name='genre' required>
+	<span class="showError" ng-show="formMovies.genre.$touched && formMovies.genre.$invalid">
+	<span ng-show="formMovies.genre.$error.required">Genre is required.</span>
+	</span>	
+    </div>
+    <div class="form-group">
+    <label for="movie.language">Language</label>
+    <input type='text' class='form-control' id='movie.language' ng-model='movie.language' name='language' required>
+	<span class="showError" ng-show="formMovies.language.$touched && formMovies.language.$invalid">
+	<span ng-show="formMovies.language.$error.required">Language is required.</span>
+	</span>
+    </div>
+    <div class="form-group">
+    <label for="movie.plot">Plot</label>
+    <textarea class='form-control' rows='5' id='movie.plot' ng-model='movie.plot' name='plot' required minimumlength></textarea>
+	<span class="showError" ng-show="formMovies.plot.$error && formMovies.plot.$touched">
+	<span ng-show="formMovies.plot.$error.required">Plot is required.</span>
+	<span ng-show="formMovies.plot.$error.minlen">Atleast 10 characters.</span>
+	</span>	
+    </div>
+    <div class="form-group">
+    <input class='form-control invo' type="submit" value="Submit" ng-disabled="formMovies.name.$invalid || formMovies.genre.$invalid || formMovies.language.$invalid || formMovies.plot.$invalid" />            
+    </div>
+   </form>
+  </div>
+
+  <div ng-switch-when="Actors">
+    <form role='form' name="formActors" ng-submit="addActors(actor)">
+    <div class="form-group">
+    <label for="actor.movie_id">Select movie</label>
+	<select id='actor.movie_id' name='movie_id' ng-options="x.name for x in movies track by x._id" ng-model="actor.movie_id" required>
+	</select>
+	<span class="showError" ng-show="formActors.movie_id.$touched && formActors.movie_id.$invalid">
+	<span ng-show="formActors.movie_id.$error.required">Movie is required.</span>
+	</span>
+    </div>
+    <div class="form-group">
+    <label for="actor.name">Name</label>
+        <input type='text' class='form-control' id='actor.name' ng-model='actor.name' name='name' required>
+			<span class="showError" ng-show="formActors.name.$touched && formActors.name.$invalid">
+	        <span ng-show="formActors.name.$error.required">Name is required.</span>
+	        </span>
+    </div>  
+    <div class="form-group">  
+    <input class='form-control invo' type="submit" value="Submit" ng-disabled="formActors.movie_id.$invalid || formActors.name.$invalid" />            
+    </div>
+   </form>
+  </div>
+
+  <div ng-switch-when="Shows">
+    <form role='form' name="formShows" ng-submit="addShows(show)">
+    <div class="form-group">
+    <label for="show.movie_id">Select movie</label>
+	<select class='form-control' id='show.movie_id' name='movie_id' ng-options="x.name for x in movies track by x._id" ng-model="show.movie_id" required>
+	</select>
+			<span class="showError" ng-show="formShows.movie_id.$touched && formShows.movie_id.$invalid">
+	        <span ng-show="formShows.movie_id.$error.required">Movie is required.</span>
+	        </span>
+    </div>
+    <div class="form-group">
+    <label for="show.theatre_id">Select theatre</label>
+	<select class='form-control' id='show.theatre_id'  name='theatre_id' ng-options="x.name for x in theatres track by x._id" ng-model="show.theatre_id" required>
+	</select>
+			<span class="showError" ng-show="formShows.theatre_id.$touched && formShows.theatre_id.$invalid">
+	        <span ng-show="formShows.theatre_id.$error.required">Theatre is required.</span>
+	        </span>	
+    </div>
+    <div class="form-group">
+    <label for="show.time">Time</label>
+        <input id='show.time' type='time' class='form-control' ng-model='show.time' name='time' required>
+			<span class="showError" ng-show="formShows.time.$touched && formShows.time.$invalid || formShows.time.$dirty && formShows.time.$invalid">
+	        <span ng-show="formShows.time.$error.required">Time is required.</span>
+	        </span>
+    </div>
+    <div class="form-group">
+    <label for="show.price">Price</label>
+	<input id='show.price' type='number' class='form-control' ng-model='show.price' name='price' required>
+			<span class="showError" ng-show="formShows.price.$touched && formShows.price.$invalid">
+	        <span ng-show="formShows.price.$error.required">Price is required.</span>
+	        </span>	
+    </div>
+    <div class="form-group">
+    <label for="show.showType">Select show type</label>
+	<select class='form-control' id='show.showType' name='showType' ng-model='show.showType' required>
+        	<option value='2D'>2D</option>
+        	<option value='3D'>3D</option>
+	</select>
+			<span class="showError" ng-show="formShows.showType.$touched && formShows.showType.$invalid">
+	        <span ng-show="formShows.showType.$error.required">Show type is required.</span>
+	        </span>
+    </div>
+    <div class="form-group">
+        <input class='form-control invo' type="submit" value="Submit" ng-disabled="formShows.movie_id.$invalid || formShows.theatre_id.$invalid || formShows.price.$invalid || formShows.time.$invalid || formShows.showType.$invalid" />   
+    </div>         
+   </form>
+  </div>
+
+  <div ng-switch-when="Theatres">
+    <form role='form' name="formTheatres" ng-submit="addTheatres(theatre)">
+	<div class="form-group">
+    <label for="theatre.city">City</label>
+	<input class='form-control' id='theatre.city'  name='city' ng-model="theatre.city" required>
+			<span class="showError" ng-show="formTheatres.city.$touched && formTheatres.city.$invalid">
+	        <span ng-show="formTheatres.city.$error.required">City is required.</span>
+	        </span>
+    </div>
+	<div class="form-group">
+    <label for="theatre.name">Name</label>
+        <input id='theatre.name' type='text' class='form-control' ng-model='theatre.name' name='name' required>
+			<span class="showError" ng-show="formTheatres.name.$touched && formTheatres.name.$invalid">
+	        <span ng-show="formTheatres.name.$error.required">Name is required.</span>
+	        </span>
+    </div>
+    <div class="form-group">
+    <label for="theatre.address">Address</label>
+        <input id='theatre.address' type='text' class='form-control' ng-model='theatre.address' name='address' required>
+			<span class="showError" ng-show="formTheatres.address.$touched && formTheatres.address.$invalid">
+	        <span ng-show="formTheatres.address.$error.required">Address is required.</span>
+	        </span>
+    </div>
+    <div class="form-group">
+        <input class='form-control invo' type="submit" value="Submit" ng-disabled="formTheatres.name.$invalid || formTheatres.city.$invalid" />            
+    </div>
+   </form>
+  </div>
+
+</div>
+
+</div>
+
+<div class='tab-pane fade' id='editTab'>
+<form role='form'>
+    <div class="form-group">
+    <label for="adminOptionView">View Entry</label>
+    <select class='form-control' id='adminOptionView' ng-model="adminOptionView">
+	  <option value="" disabled selected>Select your option</option>
+      <option value="Movies">Movies</option>
+      <option value="Actors">Actors</option>
+      <option value="Shows">Shows</option>
+      <option value="Theatres">Theatres</option>
+    </select>
+    </div>
+</form>
+
+<div ng-switch="adminOptionView" class="table-responsive">
+
+  <div ng-switch-when="Movies">
+    <table class='table table-hover table-condensed'>
+     <tr>
+      <th ng-click="orderMoviesView('name')">Name</th>
+      <th ng-click="orderMoviesView('genre')">Genre</th>
+      <th ng-click="orderMoviesView('language')">Language</th>
+      <th ng-click="orderMoviesView('plot')">Plot</th>
+     </tr>
+     <tr ng-repeat="x in movies | orderBy:moviesViewOrder" id='movie{{x._id}}' ng-init='x.show=true;x.name2=x.name;x.genre2=x.genre;x.language2=x.language;x.plot2=x.plot'>
+
+		  <td ng-show='x.show'>{{x.name}}</td>
+		  <td ng-show='x.show'>{{x.genre}}</td>
+		  <td ng-show='x.show'>{{x.language}}</td>
+		  <td ng-show='x.show'>{{x.plot}}</td>
+		  <td ng-show='x.show'>  
+		   <div class="btn-group-vertical">
+			<button ng-click='x.show=false' type="button" class="btn btn-primary">Edit</button>
+			<button ng-click='removeMovie(x)' type="button" class="btn btn-danger">Remove</button>
+		   </div>
+		  </td>
+
+	    <td ng-hide='x.show'><div class="col-sm-1"><input type='text' ng-model='x.name2'></input></div></td>
+		<td ng-hide='x.show'><div class="col-sm-1"><input type='text' ng-model='x.genre2'></input></div></td>
+		<td ng-hide='x.show'><div class="col-sm-1"><input type='text' ng-model='x.language2'></input></div></td>
+		<td ng-hide='x.show'><div class="col-sm-3"><input type='text' ng-model='x.plot2'></input></div></td>
+		<td ng-hide='x.show'>  
+		<div class="btn-group-vertical">
+		<button ng-click='saveMovie(x)' type="button" class="btn btn-primary">Save</button>
+		<button ng-click='x.show=true' type="button" class="btn btn-danger">Cancel</button>
+		</div>
+		</td>	 
+     </tr>
+   </table>
+  </div>
+
+  <div ng-switch-when="Actors" class="table-responsive">
+    <form role='form'>
+    <div class="form-group">
+    <label for="activeMovieActors">Select movie</label>
+	<select class='form-control' ng-change='fetchActors(activeMovieActors)' id='activeMovieActors' name='activeMovieActors' ng-options="x.name for x in movies track by x._id" ng-model="activeMovieActors">
+	</select>
+    </div>
+    </form>
+    <table class='table table-hover'>
+     <tr>
+      <th ng-click="orderActorsView('name')">Name</th>
+     </tr>
+	 
+	   <tr ng-repeat="x in actors | orderBy:actorsViewOrder" id='actor{{x._id}}' ng-init='x.show=true;x.name2=x.name;'>
+
+		  <td ng-show='x.show'>{{x.name}}</td>
+		  <td ng-show='x.show'>  
+		   <div class="btn-group-vertical">
+			<button ng-click='x.show=false' type="button" class="btn btn-primary">Edit</button>
+			<button ng-click='removeActor(x)' type="button" class="btn btn-danger">Remove</button>
+		   </div>
+		  </td>
+
+	    <td ng-hide='x.show'><input type='text' ng-model='x.name2'></input></td>
+		<td ng-hide='x.show'>  
+		<div class="btn-group-vertical">
+		<button ng-click='saveActor(x)' type="button" class="btn btn-primary">Save</button>
+		<button ng-click='x.show=true' type="button" class="btn btn-danger">Cancel</button>
+		</div>
+		</td>	 
+     </tr>
+	 
+   </table>
+  </div>
+
+  <div ng-switch-when="Shows" class="table-responsive">
+    <form role='form'>
+    <div class="form-group">
+    <label for="activeMovieShows">Select movie</label>
+	<select class='form-control' ng-change='fetchShows(activeMovieShows,activeTheatreShows)' id='activeMovieShows' name='activeMovieShows' ng-options="x.name for x in movies track by x._id" ng-model="activeMovieShows">
+	</select>
+    </div>
+    <div class="form-group">
+    <label for="activeTheatreShows">Select theatre</label>
+	<select class='form-control' ng-change='fetchShows(activeMovieShows,activeTheatreShows)' id='activeTheatreShows' name='activeTheatreShows' ng-options="x.name for x in theatres track by x._id" ng-model="activeTheatreShows">
+	</select>
+    </div>
+    </form>
+    <table class='table table-hover'>
+     <tr>
+      <th ng-click="orderShowsView('time')">Time</th>
+      <th ng-click="orderShowsView('showType')">Show type</th>
+      <th ng-click="orderShowsView('price')">Price</th>
+     </tr>
+	 
+	 <tr ng-repeat="x in shows | orderBy:showsViewOrder" id='show{{x._id}}' ng-init='x.show=true;x.time2=x.time;x.showType2=x.showType;x.price2=x.price;'>
+		  <td ng-show='x.show'>{{x.time}}</td>
+		  <td ng-show='x.show'>{{x.showType}}</td>
+		  <td ng-show='x.show'>{{x.price}}</td>
+		  <td ng-show='x.show'>  
+		   <div class="btn-group-vertical">
+			<button ng-click='x.show=false' type="button" class="btn btn-primary">Edit</button>
+			<button ng-click='removeShow(x)' type="button" class="btn btn-danger">Remove</button>
+		   </div>
+		  </td>
+
+	    <td ng-hide='x.show'><input type='time' ng-model='x.time2'></input></td>
+		<td ng-hide='x.show'><select ng-model='x.showType2'><option value='2D'>2D</option><option value='3D'>3D</option></select></td>
+		<td ng-hide='x.show'><input type='number' ng-model='x.price2'></input></td>
+		<td ng-hide='x.show'>  
+		<div class="btn-group-vertical">
+		<button ng-click='saveShow(x)' type="button" class="btn btn-primary">Save</button>
+		<button ng-click='x.show=true' type="button" class="btn btn-danger">Cancel</button>
+		</div>
+		</td>	 
+     </tr>
+   
+   </table>
+  </div>
+
+  <div ng-switch-when="Theatres" class="table-responsive">
+    <table class='table table-hover'>
+     <tr>
+      <th ng-click="orderTheatresView('name')">Name</th>
+      <th ng-click="orderTheatresView('city')">City</th>
+	  <th ng-click="orderTheatresView('address')">Address</th>
+     </tr>
+	 
+	 <tr ng-repeat="x in theatres | orderBy:theatresViewOrder" id='theatre{{x._id}}' ng-init='x.show=true;x.name2=x.name;x.city2=x.city;x.address2=x.address;'>
+		  <td ng-show='x.show'>{{x.name}}</td>
+		  <td ng-show='x.show'>{{x.city}}</td>
+		  <td ng-show='x.show'>{{x.address}}</td>
+		  <td ng-show='x.show'>  
+		   <div class="btn-group-vertical">
+			<button ng-click='x.show=false' type="button" class="btn btn-primary">Edit</button>
+			<button ng-click='removeTheatre(x)' type="button" class="btn btn-danger">Remove</button>
+		   </div>
+		  </td>
+
+	    <td ng-hide='x.show'><input type='text' ng-model='x.name2'></input></td>
+		<td ng-hide='x.show'><input type='text' ng-model='x.city2'></input></td>
+		<td ng-hide='x.show'><input type='text' ng-model='x.address2'></input></td>
+		<td ng-hide='x.show'>  
+		<div class="btn-group-vertical">
+		<button ng-click='saveTheatre(x)' type="button" class="btn btn-primary">Save</button>
+		<button ng-click='x.show=true' type="button" class="btn btn-danger">Cancel</button>
+		</div>
+		</td>	 
+     </tr>
+	 
+   </table>
+  </div>
+
+</div>
+
+</div>
+
+</div>
+</div>
+
+<div class='col-sm-5'>
+    
+	<form role='form'>
+	<div class="form-group" id="locationField">
+        <input id='autocomplete' onFocus="geolocate()" type='text' class='form-control' placeholder="Enter a city">
+    </div>
+	</form>
+
+    <div id="map"></div>
+
+    <div style="display: none">
+      <div id="info-content">
+	  <div class="table-responsive">
+        <table class='table'>
+          <tr id="iw-url-row" class="iw_table_row">
+            <td id="iw-icon" class="iw_table_icon"></td>
+            <td id="iw-url"></td>
+          </tr>		  
+          <tr id="iw-city-row" class="iw_table_row">
+            <td class="iw_attribute_name">City:</td>
+            <td id="iw-city"></td>
+          </tr>
+          <tr id="iw-address-row" class="iw_table_row">
+            <td class="iw_attribute_name">Address:</td>
+            <td id="iw-address"></td>
+          </tr>
+          <tr id="iw-phone-row" class="iw_table_row">
+            <td class="iw_attribute_name">Telephone:</td>
+            <td id="iw-phone"></td>
+          </tr>
+          <tr id="iw-rating-row" class="iw_table_row">
+            <td class="iw_attribute_name">Rating:</td>
+            <td id="iw-rating"></td>
+          </tr>
+          <tr id="iw-website-row" class="iw_table_row">
+            <td class="iw_attribute_name">Website:</td>
+            <td id="iw-website"></td>
+          </tr>
+		  <tr>
+		  <td><button onclick='addMarkerTheatre()' type="button" class="btn btn-success">Add theatre</button></td>
+		  </tr>
+        </table>
+		</div>
+      </div>
+    </div>
+</div>
+
+<div class='col-sm-2'>
+    <div id="listing">
+      <table id="resultsTable">
+        <tbody id="results"></tbody>
+      </table>
+    </div>
+</div>
+
+</div>
+
+</div>
+</div>
+</body>
+</html>
+
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDq1_HPW8hwBuFcrp4iRL_GGWXP_DTj9is&libraries=places&callback=initMap"
+        async defer></script>
